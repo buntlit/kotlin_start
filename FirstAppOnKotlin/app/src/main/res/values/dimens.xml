@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_end_card">4dp</dimen>
+    <dimen name="margin_start_card">4dp</dimen>
+    <dimen name="margin_top_card">4dp</dimen>
+    <dimen name="margin_bottom_card">4dp</dimen>
+    <dimen name="margin_end_text">8dp</dimen>
+    <dimen name="margin_start_text">8dp</dimen>
+    <dimen name="margin_top_text">8dp</dimen>
+    <dimen name="margin_bottom_text">8dp</dimen>
+    <dimen name="margin_text">8dp</dimen>
+</resources>
