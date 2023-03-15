@@ -1,83 +1,105 @@
 package com.example.firstapponkotlin.data
 
-object Repository: NotesRepository {
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import kotlin.random.Random
 
-    val notes: List<Note> = listOf(
+private val idRandom = Random(0)
+val noteId: Long
+    get() = idRandom.nextLong()
+
+object Repository : NotesRepository {
+
+    private val notes: MutableList<Note> = mutableListOf(
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xfff06292.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.WHITE
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xff9575cd.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.BLUE
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xff64b5f6.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.GREEN
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xff4db6ac.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.PINK
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xffb2ff59.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.RED
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xffffeb3b.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.YELLOW
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xffff6e40.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.VIOLET
         ),
 
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xfff06292.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.WHITE
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xff9575cd.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.BLUE
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xff64b5f6.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.GREEN
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xff4db6ac.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.PINK
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xffb2ff59.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.RED
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xffffeb3b.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.YELLOW
         ),
         Note(
-            "Моя первая заметка",
-            "Kotlin очень краткий, но при этом выразительный язык",
-            0xffff6e40.toInt()
+            title = "Моя первая заметка",
+            note = "Kotlin очень краткий, но при этом выразительный язык",
+            color = NoteColor.VIOLET
         )
     )
 
-    override fun getAllNotes(): List<Note> {
-        return notes
+    private val allNotes = MutableLiveData(getListToNotify())
+    override fun observeNotes(): LiveData<List<Note>> {
+        return allNotes
     }
+
+    override fun addOrReplace(newNote: Note) {
+        notes.find { it.id == newNote.id }?.let {
+            if (it == newNote) return
+            notes.remove(it)
+        }
+
+        notes.add(newNote)
+
+        allNotes.postValue(getListToNotify())
+    }
+
+    private fun getListToNotify(): List<Note> = notes.toMutableList().also { it.reverse() }
 
 }

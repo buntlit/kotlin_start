@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/margin_end_card"
-    android:layout_marginStart="@dimen/margin_start_card"
-    android:layout_marginTop="@dimen/margin_top_card"
-    android:layout_marginBottom="@dimen/margin_bottom_card"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
     tools:backgroundTint="@android:color/holo_purple">
 
     <LinearLayout
@@ -19,9 +19,9 @@
             style="@style/TextAppearance.AppCompat.Title.Inverse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_end_text"
-            android:layout_marginStart="@dimen/margin_start_text"
-            android:layout_marginTop="@dimen/margin_top_text"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
             tools:text="@string/title_text" />
 
         <TextView
@@ -29,7 +29,7 @@
             style="@style/TextAppearance.AppCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_text"
+            android:layout_margin="@dimen/margin_medium"
             tools:text="@string/body_text" />
 
     </LinearLayout>

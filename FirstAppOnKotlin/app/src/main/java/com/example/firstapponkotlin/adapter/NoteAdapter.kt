@@ -1,11 +1,13 @@
 package com.example.firstapponkotlin.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapponkotlin.data.Note
+import com.example.firstapponkotlin.data.mapToColor
 import com.example.firstapponkotlin.databinding.ItemNoteBinding
 
 val DIFF_UTIL: DiffUtil.ItemCallback<Note> = object : DiffUtil.ItemCallback<Note>() {
@@ -18,8 +20,8 @@ val DIFF_UTIL: DiffUtil.ItemCallback<Note> = object : DiffUtil.ItemCallback<Note
     }
 }
 
-class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteViewHolder>(DIFF_UTIL) {
-
+class NoteAdapter(val noteHandler: (Note) -> Unit) :
+    ListAdapter<Note, NoteAdapter.NoteViewHolder>(DIFF_UTIL) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val noteBinding = ItemNoteBinding.inflate(layoutInflater, parent, false)
@@ -31,14 +33,21 @@ class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteViewHolder>(DIFF_UTIL) {
         holder.bind(getItem(position))
     }
 
-    class NoteViewHolder(private val noteBinding: ItemNoteBinding) :
+    inner class NoteViewHolder(private val noteBinding: ItemNoteBinding) :
         RecyclerView.ViewHolder(noteBinding.root) {
 
-        fun bind(notes: Note) {
-            with(notes) {
+        private lateinit var currentNote: Note
+
+        private val noteClicked: View.OnClickListener = View.OnClickListener {
+            noteHandler(currentNote)
+        }
+        fun bind(item: Note) {
+            currentNote = item
+            with(item) {
                 noteBinding.title.text = title
                 noteBinding.body.text = note
-                noteBinding.root.setBackgroundColor(color)
+                noteBinding.root.setBackgroundColor(color.mapToColor(noteBinding.root.context))
+                noteBinding.root.setOnClickListener(noteClicked)
             }
         }
     }

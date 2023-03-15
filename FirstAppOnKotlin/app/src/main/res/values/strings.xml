@@ -2,4 +2,7 @@
     <string name="app_name">FirstAppOnKotlin</string>
     <string name="title_text">Geekbrains + Kotlin forever</string>
     <string name="body_text">Я Kotlin бы выучил только за то, что на нем разрабатывал Вортон!</string>
+    <string name="hint_note_title">Title text</string>
+    <string name="hint_note_body">Body text</string>
+    <string name="button_save">Save and exit</string>
 </resources>
