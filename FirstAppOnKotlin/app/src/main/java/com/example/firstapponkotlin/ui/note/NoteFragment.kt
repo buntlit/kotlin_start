@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -52,6 +53,10 @@ class NoteFragment : Fragment(R.layout.note_fragment) {
             binding.root.setBackgroundColor(it.color.mapToColor(binding.root.context))
         }
 
+        viewModel.showError().observe(viewLifecycleOwner){
+            Toast.makeText(requireContext(), "Error while saving note!", Toast.LENGTH_LONG).show()
+        }
+
         binding.titleEt.addTextChangedListener {
             viewModel.updateTitle(it?.toString() ?:"")
         }
@@ -61,6 +66,7 @@ class NoteFragment : Fragment(R.layout.note_fragment) {
         }
 
         binding.buttonSaveAndExit.setOnClickListener {
+            viewModel.saveNote()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "476092767721",
+    "project_id": "first-app-on-kotlin",
+    "storage_bucket": "first-app-on-kotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476092767721:android:535eba4cbe1c2039127f78",
+        "android_client_info": {
+          "package_name": "com.example.firstapponkotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476092767721-hg2flhd972fd0re1978nbqhd72gtamrt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASpqWubvhXW6l6MSs80jh1P1ULbfyN358"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476092767721-hg2flhd972fd0re1978nbqhd72gtamrt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
