@@ -2,6 +2,7 @@ package com.example.firstapponkotlin.data
 
 import androidx.lifecycle.LiveData
 import com.example.firstapponkotlin.data.db.FireStoreDatabaseProvider
+import com.example.firstapponkotlin.model.Note
 import kotlin.random.Random
 
 private val idRandom = Random(0)
@@ -93,8 +94,12 @@ class Repository(private val provider: FireStoreDatabaseProvider) : NotesReposit
         return provider.addOrReplace(newNote)
     }
 
-//    private fun getListToNotify(): List<Note> = notes.toMutableList().also { it.reverse() }
+    override fun getCurrentUser() = provider.getCurrentUser()
+
+    override fun deleteNote(note: Note): LiveData<Result<Note>> {
+        return provider.deleteNote(note)
+    }
+
+    //    private fun getListToNotify(): List<Note> = notes.toMutableList().also { it.reverse() }
 
 }
-
-val notesRepository: NotesRepository by lazy { Repository(FireStoreDatabaseProvider()) }

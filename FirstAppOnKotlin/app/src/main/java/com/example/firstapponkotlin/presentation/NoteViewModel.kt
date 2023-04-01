@@ -2,17 +2,18 @@ package com.example.firstapponkotlin.presentation
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.*
-import com.example.firstapponkotlin.data.Note
+import com.example.firstapponkotlin.data.NotesRepository
 import com.example.firstapponkotlin.data.SingleLiveEvent
-import com.example.firstapponkotlin.data.notesRepository
+import com.example.firstapponkotlin.model.Note
 
-class NoteViewModel(var note: Note?) : ViewModel() {
+class NoteViewModel(private val notesRepository: NotesRepository, var note: Note?) : ViewModel() {
 
     private val showErrorLiveData = SingleLiveEvent<String>()
-    private val lifecycleOwner: LifecycleOwner = object : LifecycleOwner{
+    private val lifecycleOwner: LifecycleOwner = object : LifecycleOwner {
         override val lifecycle: Lifecycle
             get() = viewModelLifecycle
     }
+
     @SuppressLint("StaticFieldLeak")
     private val viewModelLifecycle = LifecycleRegistry(lifecycleOwner).also {
         it.currentState = Lifecycle.State.RESUMED
@@ -33,6 +34,12 @@ class NoteViewModel(var note: Note?) : ViewModel() {
                     showErrorLiveData.value = Result.toString()
                 }
             }
+        }
+    }
+
+    fun deleteNote() {
+        note?.let { note ->
+            notesRepository.deleteNote(note)
         }
     }
 

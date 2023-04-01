@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.firstapponkotlin.data.Note
-import com.example.firstapponkotlin.data.mapToColor
 import com.example.firstapponkotlin.databinding.ItemNoteBinding
+import com.example.firstapponkotlin.model.Note
+import com.example.firstapponkotlin.model.mapToColor
 
 val DIFF_UTIL: DiffUtil.ItemCallback<Note> = object : DiffUtil.ItemCallback<Note>() {
     override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {

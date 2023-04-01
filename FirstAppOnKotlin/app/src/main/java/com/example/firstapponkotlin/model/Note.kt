@@ -1,9 +1,10 @@
-package com.example.firstapponkotlin.data
+package com.example.firstapponkotlin.model
 
 import android.content.Context
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import com.example.firstapponkotlin.R
+import com.example.firstapponkotlin.data.noteId
 import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
 

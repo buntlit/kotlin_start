@@ -5,4 +5,6 @@
     <string name="hint_note_title">Title text</string>
     <string name="hint_note_body">Body text</string>
     <string name="button_save">Save and exit</string>
+    <string name="button_exit">Exit</string>
+    <string name="button_delete">Delete</string>
 </resources>

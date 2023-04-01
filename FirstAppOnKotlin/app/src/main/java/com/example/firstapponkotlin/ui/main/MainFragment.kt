@@ -1,5 +1,6 @@
 package com.example.firstapponkotlin.ui.main
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,23 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firstapponkotlin.R
 import com.example.firstapponkotlin.adapter.NoteAdapter
-import com.example.firstapponkotlin.data.Note
-import com.example.firstapponkotlin.databinding.MainFragmentBinding
+import com.example.firstapponkotlin.databinding.FragmentMainBinding
+import com.example.firstapponkotlin.model.Note
 import com.example.firstapponkotlin.presentation.MainViewModel
 import com.example.firstapponkotlin.presentation.MainViewState
+import com.example.firstapponkotlin.ui.auth.SplashActivity
 import com.example.firstapponkotlin.ui.note.NoteFragment
+import com.firebase.ui.auth.AuthUI
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainFragment : Fragment(R.layout.main_fragment) {
+class MainFragment : Fragment(R.layout.fragment_main) {
 
-    private val viewMode by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(this)[MainViewModel::class.java]
-    }
+    private val viewModel by viewModel<MainViewModel>()
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -31,7 +32,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
@@ -45,12 +46,12 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         }
         binding.mainRecycler.adapter = adapter
 
-        viewMode.observeViewState().observe(viewLifecycleOwner) {
+        viewModel.observeViewState().observe(viewLifecycleOwner) {
             when (it) {
                 is MainViewState.Value -> {
                     adapter.submitList(it.notes)
                 }
-                MainViewState.EMPTY -> Unit
+//                MainViewState.EMPTY -> Unit
             }
         }
 
@@ -58,18 +59,27 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             navigateToCreation()
         }
 
-        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy<=0){
+                if (dy <= 0) {
                     binding.fab.show()
-                }else{
+                } else {
                     binding.fab.hide()
                 }
             }
         })
-    }
 
+        binding.buttonExit.setOnClickListener {
+            val context = binding.mainRecycler.context
+            AuthUI.getInstance().signOut(context)
+                .addOnCompleteListener {
+                    val intent = Intent(context, SplashActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun navigateToNote(note: Note) {
         (requireActivity() as MainActivity).navigateTo(NoteFragment.create(note))
