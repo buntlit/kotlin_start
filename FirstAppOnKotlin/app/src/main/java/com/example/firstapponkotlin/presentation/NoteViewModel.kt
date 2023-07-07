@@ -1,23 +1,33 @@
 package com.example.firstapponkotlin.presentation
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.firstapponkotlin.data.NotesRepository
 import com.example.firstapponkotlin.data.SingleLiveEvent
 import com.example.firstapponkotlin.model.Note
+import kotlinx.coroutines.launch
 
 class NoteViewModel(private val notesRepository: NotesRepository, var note: Note?) : ViewModel() {
 
-    private val showErrorLiveData = SingleLiveEvent<String>()
-    private val lifecycleOwner: LifecycleOwner = object : LifecycleOwner {
-        override val lifecycle: Lifecycle
-            get() = viewModelLifecycle
-    }
+//    val exceptionHandler: CoroutineExceptionHandler = object : CoroutineExceptionHandler {
+//        override val key: CoroutineContext.Key<*> = CoroutineExceptionHandler.Key
+//
+//        override fun handleException(context: CoroutineContext, exception: Throwable) {
+//            TODO("Not yet implemented")
+//        }
+//
+//    }
 
-    @SuppressLint("StaticFieldLeak")
-    private val viewModelLifecycle = LifecycleRegistry(lifecycleOwner).also {
-        it.currentState = Lifecycle.State.RESUMED
-    }
+    private val showErrorLiveData = SingleLiveEvent<String>()
+//    private val lifecycleOwner: LifecycleOwner = object : LifecycleOwner {
+//        override val lifecycle: Lifecycle
+//            get() = viewModelLifecycle
+//    }
+//
+//    @SuppressLint("StaticFieldLeak")
+//    private val viewModelLifecycle = LifecycleRegistry(lifecycleOwner).also {
+//        it.currentState = Lifecycle.State.RESUMED
+//    }
 
     fun updateNote(text: String) {
         note = (note ?: generateNote()).copy(note = text)
@@ -28,27 +38,52 @@ class NoteViewModel(private val notesRepository: NotesRepository, var note: Note
     }
 
     fun saveNote() {
-        note?.let { note ->
-            notesRepository.addOrReplace(note).observe(lifecycleOwner) {
-                it.onFailure {
-                    showErrorLiveData.value = Result.toString()
-                }
+
+        viewModelScope.launch {
+            val noteValue = note ?: return@launch
+
+            try {
+                notesRepository.addOrReplace(noteValue)
+            } catch (th: Throwable){
+                showErrorLiveData.value = Result.toString()
             }
+
         }
+//        note?.let { note ->
+//            notesRepository.addOrReplace(note).observe(lifecycleOwner) {
+//                it.onFailure {
+//                    showErrorLiveData.value = Result.toString()
+//                }
+//            }
+//        }
     }
 
     fun deleteNote() {
-        note?.let { note ->
-            notesRepository.deleteNote(note)
+        viewModelScope.launch {
+            val noteValue = note ?: return@launch
+
+            try {
+                notesRepository.deleteNote(noteValue)
+            } catch (th: Throwable){
+                showErrorLiveData.value = Result.toString()
+            }
+
         }
+//        note?.let { note ->
+//            notesRepository.deleteNote(note).observe(lifecycleOwner) {
+//                it.onFailure {
+//                    showErrorLiveData.value = Result.toString()
+//                }
+//            }
+//        }
     }
 
     fun showError(): SingleLiveEvent<String> = showErrorLiveData
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelLifecycle.currentState = Lifecycle.State.DESTROYED
-    }
+//
+//    override fun onCleared() {
+//        super.onCleared()
+//        viewModelLifecycle.currentState = Lifecycle.State.DESTROYED
+//    }
 
     private fun generateNote(): Note {
         return Note()

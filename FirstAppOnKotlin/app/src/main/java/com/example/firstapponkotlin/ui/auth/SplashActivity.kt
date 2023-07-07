@@ -35,11 +35,12 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val state = viewModel.requestUser()
-        if (state.error != null) {
-            renderError(state.error)
-        } else {
-            renderData(state.isAuth)
+        viewModel.observeViewState().observe(this) {
+            if (it.error != null) {
+                renderError(it.error)
+            } else {
+                renderData(it.isAuth)
+            }
         }
     }
 
